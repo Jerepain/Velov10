@@ -5,9 +5,43 @@
     xmlns:local="using:Velov10"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Opacity" Value="0.8"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                </Setter.Value>
+            </Setter>
 
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Fill="Black"/>
+                            <TextBlock FontSize="30" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </Page.Resources>
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <!--<UI:AdControl 
+             AutoRefreshIntervalInSeconds="60" 
+             ApplicationId="8cb39d74-8e6f-4314-8bfa-e59fff80ea08" 
+             AdUnitId="11011388"
+             HorizontalAlignment="Right"
+            
+             IsAutoRefreshEnabled="True"
+             VerticalAlignment="Bottom" 
+             Width="480"
+            Height="80"
+            />-->
+        <maps:MapControl x:Name="myMap" Margin="0" ZoomLevel="17" MapServiceToken="Sk4d5NaBKZvGF7lXDdch~Ioxd4oDKX4z0pX8IBrFTVw~Aq3cke1ZTWWpM0bYvqv5PF8uxem_WEo4cCvvIEGyPws6kkixIglD2lAV9BKE2awM"/>
     </Grid>
 </Page>
