@@ -2,13 +2,12 @@
     x:Class="Velov10.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Velov10"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d">
 
-    <Page.Resources>
+    <!--<Page.Resources>
         <Style TargetType="Button">
             <Setter Property="Opacity" Value="0.8"/>
             <Setter Property="RenderTransform">
@@ -29,7 +28,7 @@
             </Setter>
 
         </Style>
-    </Page.Resources>
+    </Page.Resources>-->
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <!--<UI:AdControl 
              AutoRefreshIntervalInSeconds="60" 
@@ -42,6 +41,6 @@
              Width="480"
             Height="80"
             />-->
-        <maps:MapControl x:Name="myMap" Margin="0" ZoomLevel="17" MapServiceToken="Sk4d5NaBKZvGF7lXDdch~Ioxd4oDKX4z0pX8IBrFTVw~Aq3cke1ZTWWpM0bYvqv5PF8uxem_WEo4cCvvIEGyPws6kkixIglD2lAV9BKE2awM"/>
+        <maps:MapControl x:Name="MyMap" Margin="0" ZoomLevel="17" MapServiceToken="Sk4d5NaBKZvGF7lXDdch~Ioxd4oDKX4z0pX8IBrFTVw~Aq3cke1ZTWWpM0bYvqv5PF8uxem_WEo4cCvvIEGyPws6kkixIglD2lAV9BKE2awM"/>
     </Grid>
 </Page>

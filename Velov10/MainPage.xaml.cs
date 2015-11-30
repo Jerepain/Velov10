@@ -1,25 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Geolocation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Velov;
-using Velov.Assets;
-using Velov.Common;
-using Velov.DataModel;
 using Velov10.Common;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -27,24 +13,25 @@ using Velov10.Common;
 namespace Velov10
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage
     {
-        private Geolocator geo = null;
-        private CoreDispatcher _cd;
-        LocationIcon10m _locationIcon10m;
-        LocationIcon100m _locationIcon100m;
+        private readonly CoreDispatcher _cd;
+        private readonly LocationIcon100M _locationIcon100M;
+        private readonly LocationIcon10M _locationIcon10M;
+        private readonly Geolocator _geo;
+
         public MainPage()
         {
-            this.InitializeComponent();
-            this._locationIcon100m = new LocationIcon100m();
-            this._locationIcon10m = new LocationIcon10m();
-            myMap.Children.Add(_locationIcon10m);
-            myMap.Children.Add(_locationIcon100m);
+            InitializeComponent();
+            _locationIcon100M = new LocationIcon100M();
+            _locationIcon10M = new LocationIcon10M();
+            MyMap.Children.Add(_locationIcon10M);
+            MyMap.Children.Add(_locationIcon100M);
 
             _cd = Window.Current.CoreWindow.Dispatcher;
-            myMap.Center = new Geopoint(new BasicGeoposition()
+            MyMap.Center = new Geopoint(new BasicGeoposition
             {
                 Latitude = 45.7600,
                 Longitude = 4.8400
@@ -52,51 +39,53 @@ namespace Velov10
             // Hub is only supported in Portrait orientation
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
 
-            List<LyonStation> stations = DoWork.DeserializeStations();
+            var stations = Helper.LocalisationStations().Result;
+
+                //DoWork.DeserializeStations().ToList();
             foreach (var station in stations)
             {
                 var myButton = new Button();
 
-                MapControl.SetLocation(myButton, new Geopoint(new BasicGeoposition()
+                MapControl.SetLocation(myButton, new Geopoint(new BasicGeoposition
                 {
-                    Latitude = station.latitude,
-                    Longitude = station.longitude
+                    Latitude = station.Latitude,
+                    Longitude = station.Longitude
                 }));
 
-                myButton.Tapped += Helper.DisplayRibbon(station, myButton);
-                myMap.Children.Add(myButton);
+                myButton.Tapped += Helper.DisplayRibbon(station.Number, myButton);
+                MyMap.Children.Add(myButton);
             }
 
-            if (geo == null)
+            if (_geo == null)
             {
-                geo = new Geolocator();
+                _geo = new Geolocator();
             }
-            if (geo != null)
+            if (_geo != null)
             {
-                geo.MovementThreshold = 3.0;
-                //     geo.PositionChanged += new TypedEventHandler<Geolocator, PositionChangedEventArgs>(geo_PositionChanged);
+                _geo.MovementThreshold = 3.0;
+                //     _geo.PositionChanged += new TypedEventHandler<Geolocator, PositionChangedEventArgs>(geo_PositionChanged);
             }
         }
 
-        async private void geo_PositionChanged(Geolocator sender, PositionChangedEventArgs e)
+        private async void geo_PositionChanged(Geolocator sender, PositionChangedEventArgs e)
         {
             await _cd.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                Geoposition pos = e.Position;
-                var location = new Geopoint(new BasicGeoposition()
+                var pos = e.Position;
+                var location = new Geopoint(new BasicGeoposition
                 {
                     Latitude = pos.Coordinate.Point.Position.Latitude,
                     Longitude = pos.Coordinate.Point.Position.Longitude
                 });
                 if (pos.Coordinate.Accuracy <= 10)
                 {
-                    MapControl.SetLocation(_locationIcon10m, location);
+                    MapControl.SetLocation(_locationIcon10M, location);
                 }
                 else if (pos.Coordinate.Accuracy <= 100)
                 {
-                    MapControl.SetLocation(_locationIcon100m, location);
+                    MapControl.SetLocation(_locationIcon100M, location);
                 }
-                myMap.Center = location;
+                MyMap.Center = location;
             });
         }
     }

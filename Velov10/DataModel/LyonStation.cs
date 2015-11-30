@@ -1,25 +1,44 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Velov.DataModel
+namespace Velov10.DataModel
 {
     [DataContract]
     public class LyonStation
     {
+        public LyonStation(double number, string name, string address, double latitude, double longitude, double bikeStands = 0,
+            double availablBikeStands = 0, double availableBikes = 0)
+        {
+            Number = number;
+            Name = name;
+            Address = address;
+            Latitude = latitude;
+            Longitude = longitude;
+            BikeStands = bikeStands;
+            AvailableBikeStands = availablBikeStands;
+            AvailableBikes = availableBikes;
+        }
+
         [DataMember]
-        public int number { get; set; }
+        public double Number { get; private set; }
+
         [DataMember]
-        public string name { get; set; }
+        public string Name { get; private set; }
+
         [DataMember]
-        public string address { get; set; }
+        public string Address { get; private set; }
+
         [DataMember]
-        public double latitude { get; set; }
+        public double Latitude { get; private set; }
+
         [DataMember]
-        public double longitude { get; set; }
+        public double Longitude { get; private set; }
+
         [DataMember]
-        public int bike_stands { get; set; }
+        public double BikeStands { get; private set; }
+
+        public double AvailableBikeStands { get; private set; }
+
         [DataMember]
-        public int available_bike_stands { get; set; }
-        [DataMember]
-        public int available_bikes { get; set; }
+        public double AvailableBikes { get; private set; }
     }
 }
